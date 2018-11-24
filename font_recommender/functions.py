@@ -20,8 +20,8 @@ def generate_sentences(
         font_infos = pd.read_csv("font_recommender/static/font_infos.csv"),
         sentence='The quick brown fox jumps over the lazy dog'):
 
-    print(font_list)
     font_list = list(font_infos.iloc[font_list,1])
+
     font_list = [f"font_recommender/static/fonts/{font}.ttf" for font in font_list]
 
     for idx, font in enumerate(font_list):
@@ -36,7 +36,7 @@ def generate_sentences(
 
 
 def generate_font_selection(font_id=np.random.randint(low=0,high=300), #TO BE CHANGED
-                            max_distance=400,
+                            max_distance=600,
                             distance_matrix=pd.read_csv("font_recommender/static/distance_matrix.csv",index_col=0),
                             mode="exploration",
                             font_infos = pd.read_csv("font_recommender/static/font_infos.csv")):
@@ -53,13 +53,14 @@ def generate_font_selection(font_id=np.random.randint(low=0,high=300), #TO BE CH
 
     if mode=="exploration":
         relevant_set = np.where((relevant_set>0) & (relevant_set<max_distance))[0]
+        # set_trace()
         font_choice = np.random.choice(relevant_set,5,replace=False)
     if mode=="exploitation":
         font_choice = relevant_set.argsort()[1:6]
     # set_trace()
     paths = list(set(font_infos.iloc[font_choice,1].values))
 
-    return paths
+    return paths, font_choice
 
 
 def get_font_id(string, font_infos = pd.read_csv("font_recommender/static/font_infos.csv")):
