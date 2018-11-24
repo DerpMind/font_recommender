@@ -26,7 +26,9 @@ def get_png_path():
 	data_string = json.dumps(data['font_name'])
 
 	font_id = functions.get_font_id(data_string)
-	results, _  = functions.generate_font_selection(font_id=font_id,mode='exploitation')
+	results, indices  = functions.generate_font_selection(font_id=font_id,mode='exploitation')
+	
+	functions.generate_sentences(indices)
 	#results is the first element of the tuple that is returned from generate_font_selection, which is an array of path names
 	# set_trace()
 	return json.dumps({'font_names': results}) #this data gets sent over to client, which client.js handles
