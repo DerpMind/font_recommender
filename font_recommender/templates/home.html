@@ -2,7 +2,8 @@
 
 {% block content %}
     {% for font in fonts %}
- 
-        <input onClick="some_example('{{font.picture}}')" type="image" src="{{ font.picture }}" />
+    <div> 
+        <input onClick="some_example()" type="image" src="{{ font.picture }}" x-path="{{ font.picture }}" />
+    </div>
     {% endfor %}
 {% endblock %}
