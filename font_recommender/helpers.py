@@ -59,14 +59,17 @@ def rgb2gray(pxl):
 
 
 def get_corners(pxl):
-	'''Returns the x and y coordinates of the
-	corners of the pixelized character'''
-	bools = np.where(pxl==255, True, False)
-	# set_trace()
-	return {'top': np.where(bools == False)[0].min(),
-	'left':np.where(bools==False)[1].min(),
-	'bottom': np.where(bools==False)[0].max(),
-	'right': np.where(bools==False)[1].max()}
+
+    '''Returns the x and y coordinates of the
+    corners of the pixelized character'''
+    bools = np.where(pxl==255, True, False)
+
+    return {
+        'top': np.where(bools == False)[0].min(),
+        'left':np.where(bools==False)[1].min(),
+        'bottom': np.where(bools==False)[0].max(),
+        'right': np.where(bools==False)[1].max()}
+
 
 
 

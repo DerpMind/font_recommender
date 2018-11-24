@@ -2,7 +2,7 @@
 async function some_example() {
 	const clicked_element_parent = this.event.target.parentNode; //this preserves the object that got clicked on
 	const resp = await fetch('/closest-neighbors', { //closest-neighbors has a route handler in routes.py that finds the nearest neighbors
-		method:'POST', 
+		method:'POST',
 		headers: new Headers({
 			Accept:'application/json', 
 			'Content-Type':'application/json'
