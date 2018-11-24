@@ -11,6 +11,7 @@ def picture_paths(pname="font_recommender"):
     fonts = [
         dict([("picture", path[len(pname):])]) for path in font_paths
     ]
+
     return fonts
 
 
@@ -37,7 +38,8 @@ def generate_sentences(
 def generate_font_selection(font_id=np.random.randint(low=0,high=300), #TO BE CHANGED
                             max_distance=400,
                             distance_matrix=pd.read_csv("font_recommender/static/distance_matrix.csv",index_col=0),
-                            mode="exploration"):
+                            mode="exploration",
+                            font_infos = pd.read_csv("font_recommender/static/font_infos.csv")):
     '''
     Receives id of the font that has been clicked and a radius (max_distance)
     It has two modes:
@@ -46,18 +48,28 @@ def generate_font_selection(font_id=np.random.randint(low=0,high=300), #TO BE CH
 
     Returns selection of new fonts that can be fed into the sentence generator.
     '''
+    # set_trace()
     relevant_set = np.array(distance_matrix.iloc[[font_id], :]).reshape(-1)
 
     if mode=="exploration":
         relevant_set = np.where((relevant_set>0) & (relevant_set<max_distance))[0]
         font_choice = np.random.choice(relevant_set,5,replace=False)
     if mode=="exploitation":
-        font_choice = relevant_set.argsort()[1:7]
+        font_choice = relevant_set.argsort()[1:6]
+    # set_trace()
+    paths = list(set(font_infos.iloc[font_choice,1].values))
 
-    return font_choice
+    return paths
 
 
+def get_font_id(string, font_infos = pd.read_csv("font_recommender/static/font_infos.csv")):
+    font_name = string.split('/')[-1].split('.')[0]
+    column = font_infos.columns[1]
+    idx = font_infos[font_infos[column]==font_name].index[0]
 
+    return idx
+
+    
 #DOES NOT WORK YET!
 def generate_font_list(path="font_recommender/static/"):
     
