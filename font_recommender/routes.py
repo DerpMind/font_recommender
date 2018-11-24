@@ -11,24 +11,23 @@ fonts = functions.picture_paths() #refactor picture_paths()
 @app.route("/")
 def home():
     print(functions.generate_sentences(
-        font_list=functions.generate_font_selection(mode='exploitation')
+        font_list=functions.generate_font_selection(mode='exploration')
     ))
     # set_trace()
     return render_template("home.html", fonts = fonts)
 
-# @app.route("/")
-# def home():
-#     print(functions.generate_sentences(
-#         font_list=[10, 11, 12, 13, 14]))
-#     return render_template("home.html", fonts = fonts)
+
 
 @app.route("/closest-neighbors", methods = ['POST'])
 def get_png_path():
 	data = request.get_json()
 	# print(data['font_name'])
 	data_string = json.dumps(data['font_name'])
-	
-	return data_string
+
+	font_id = functions.get_font_id(data_string)
+	results = functions.generate_font_selection(font_id=font_id,mode='exploitation')
+	return json.dumps({'font_names': results})
+
 
 
 
