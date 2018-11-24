@@ -12,6 +12,7 @@ fonts = functions.picture_paths() #refactor picture_paths()
 def home():
     print(functions.generate_sentences(
         font_list=functions.generate_font_selection(mode='exploration')[1]
+        #generate_font_selection now returns a tuple, the second element being the indices
     ))
     # set_trace()
     return render_template("home.html", fonts = fonts)
@@ -26,8 +27,9 @@ def get_png_path():
 
 	font_id = functions.get_font_id(data_string)
 	results, _  = functions.generate_font_selection(font_id=font_id,mode='exploitation')
+	#results is the first element of the tuple that is returned from generate_font_selection, which is an array of path names
 	# set_trace()
-	return json.dumps({'font_names': results})
+	return json.dumps({'font_names': results}) #this data gets sent over to client, which client.js handles
 
 
 

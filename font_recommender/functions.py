@@ -64,6 +64,9 @@ def generate_font_selection(font_id=np.random.randint(low=0,high=300), #TO BE CH
 
 
 def get_font_id(string, font_infos = pd.read_csv("font_recommender/static/font_infos.csv")):
+    '''
+    Extracts the index of the font name  
+    '''
     font_name = string.split('/')[-1].split('.')[0]
     column = font_infos.columns[1]
     idx = font_infos[font_infos[column]==font_name].index[0]
