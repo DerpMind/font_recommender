@@ -11,7 +11,7 @@ fonts = functions.picture_paths() #refactor picture_paths()
 @app.route("/")
 def home():
     print(functions.generate_sentences(
-        font_list=functions.generate_font_selection(mode='exploration')
+        font_list=functions.generate_font_selection(mode='exploration')[1]
     ))
     # set_trace()
     return render_template("home.html", fonts = fonts)
@@ -25,7 +25,8 @@ def get_png_path():
 	data_string = json.dumps(data['font_name'])
 
 	font_id = functions.get_font_id(data_string)
-	results = functions.generate_font_selection(font_id=font_id,mode='exploitation')
+	results, _  = functions.generate_font_selection(font_id=font_id,mode='exploitation')
+	# set_trace()
 	return json.dumps({'font_names': results})
 
 
