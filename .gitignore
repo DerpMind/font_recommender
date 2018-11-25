@@ -1,4 +1,2 @@
-font_recommender/static/*.png
-font_recommender/__pycache__
-font_recommender/.ipynb_checkpoints
-font_recommender/static/fonts
+.idea*
+Jesus_app/.idea/*
