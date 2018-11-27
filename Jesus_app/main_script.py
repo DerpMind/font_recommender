@@ -19,7 +19,9 @@ def about():
 
 @app.route('/neighbors')
 def neighbors(max_distance=0):
+
     clicked_font = path_to_name(request.args.get('clicked_font'))
+
     idx = font_list[font_list == clicked_font].index[0]
 
     idx_top5 = generate_font_selection(idx,

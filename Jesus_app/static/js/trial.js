@@ -49,7 +49,8 @@ function fillFontList(result, fontList){
   d3.select('#fontList')
     .selectAll('image')
     .on('click', function(){
-      var clicked_font = d3.select(this).html();
+      // debugger;
+      var clicked_font = this.href.baseVal;
       // debugger;
       getResult(clicked_font);
 
@@ -60,10 +61,11 @@ function fillFontList(result, fontList){
 function getResult(clicked_font){
   $.ajax({
     url: 'neighbors',
-    data: {'clicked_font': clicked_font},
+    data: {'clicked_font': clicked_font, 'trial': true},
     dataType: 'json',
     type: 'GET',
     success: function(result) {
+      debugger;
       fillFontList(result.top5, 'fontTop10');
       fillFontList(result.random5, 'fontList');
     }

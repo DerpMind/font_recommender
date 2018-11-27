@@ -2,9 +2,13 @@ import numpy as np
 import pandas as pd
 #from font_recommender import helpers
 
-def path_to_name(string):
-    return string.split("/")[-2].split(".")[0].replace("%20", " ")
+def path_to_name(string, idx=None):
+    if idx is not None:
+        return string.split("/")[-1].split(".")[0].replace("%20", " ")
+    else:
+        return string.split("/")[-2].split(".")[0].replace("%20", " ")
 
+        
 def name_to_path(string):
     return string.replace(" ", "%20") + ".png"
 
