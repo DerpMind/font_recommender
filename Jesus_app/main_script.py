@@ -1,6 +1,6 @@
 from Jesus_app import app
 from Jesus_app.functions import name_to_path, path_to_name, generate_font_selection
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify, g
 import numpy as np, pandas as pd
 
 font_list = pd.read_csv("Jesus_app/static/images/font_infos.csv", index_col=0).iloc[:,0]
@@ -41,7 +41,32 @@ def initial():
     idx = np.random.randint(4400, size=5)
     print(font_paths[idx])
     result = font_paths[idx].tolist() # I have to change the numpy to list because Object of type 'ndarray' is not JSON serializable
-
+    # set_trace()
     return jsonify(result)
 
+
+@app.route('/trial')
+def trial():
+    return render_template('trial.html')
+
+@app.route('/<font_name>/neighbors')
+def trial_json(font_name):
+    print(font_name)
+
+    clicked_font = path_to_name(request.args.get('clicked_font'))
+    idx = font_list[font_list == clicked_font].index[0]
+    # set_trace()
+    idx_top5 = generate_font_selection(idx,
+                                        distance_matrix,
+                                        font_list,
+                                        max_distance)[0]
+
+    idx = np.random.randint(4400, size=5)
+
+    result = {'top5':font_paths[idx_top5].tolist(), 'random5':font_paths[idx].tolist()} 
+    return r"""
+    {
+ "name": "marvel",
+ "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/marvel.png",
+ "children": 
 
