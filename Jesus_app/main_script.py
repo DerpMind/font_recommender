@@ -1,5 +1,5 @@
 from Jesus_app import app
-from Jesus_app.functions import name_to_path, path_to_name, generate_font_selection
+from Jesus_app.functions import name_to_path, path_to_name, generate_trial_font_selection
 from flask import Flask, request, render_template, jsonify, g
 import numpy as np, pandas as pd
 
@@ -55,20 +55,26 @@ def trial():
 def trial_json(font_name):
     print(font_name)
 
-    clicked_font = path_to_name(request.args.get('clicked_font'))
-    idx = font_list[font_list == clicked_font].index[0]
-    # set_trace()
-    idx_top5 = generate_font_selection(idx,
+    idx = font_list[font_list == font_name].index[0]
+    relevant_rows = np.array(distance_matrix.iloc[[idx], :]).reshape(-1)
+    idx_top5,dist_top5 = generate_trial_font_selection(idx,
                                         distance_matrix,
                                         font_list,
-                                        max_distance)[0]
+                                        300)
 
-    idx = np.random.randint(4400, size=5)
+    name = font_name.replace('%20', ' ')
+    file_path = f'static/images/fonts/{name}.png'
+    neighbor_paths = font_paths[idx_top5].tolist()
+    neighbs = []
+    result = {'name': name, 'img': file_path, 'children': neighbs}
+    for i, n in enumerate(neighbor_paths):
+        font_name = n.split('/')[-1].split('.')[0].replace('%20', ' ')
+        distance = dist_top5[i]
+        path = n.replace('%20', ' ')
+        sub_result = {'name': font_name, 'img': path, 'distance': distance}
+        neighbs.append(sub_result)
 
-    result = {'top5':font_paths[idx_top5].tolist(), 'random5':font_paths[idx].tolist()} 
-    return r"""
-    {
- "name": "marvel",
- "img": "http://marvel-force-chart.surge.sh/marvel_force_chart_img/marvel.png",
- "children": 
+    # result = {'top5':font_paths[idx_top5].tolist(), 'random5':font_paths[idx].tolist()} 
+    # result = {'name': ''}
+    return json.dumps(result)
 

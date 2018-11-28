@@ -74,50 +74,32 @@ function getResult(clicked_font){
 
 // var tcBlack = "#130C0E";
 
-// // rest of vars
-// var w = 960,
-//     h = 800,
-//     maxNodeSize = 50,
-//     x_browser = 20,
-//     y_browser = 25,
-//     root;
- 
-// var vis;
-// var force = d3.layout.force(); 
 
-// vis = d3.select("#vis-container").append("svg").attr("width", w).attr("height", h);
+var w = 1296,
+    h = 1000,
+    maxNodeSize = 50,
+    x_browser = 20,
+    y_browser = 25,
+    root;
  
+var vis;
+var force = d3.layout.force(); 
 
- function on_thing_clicked(font_name) {
-  d3.json(font_name + '/neighbors', function() {
-    //
-  })
+vis = d3.select("#vis-container").append("svg").attr("width", w).attr("height", h);
 
- }
+ function on_thing_clicked(font_name) { //add eventhandler to each of the 5 circles
+  d3.json(font_name + '/neighbors', function(json) {
+  root = json;
+  root.fixed = true;
+  // debugger;
+  var defs = vis.insert("svg:defs").data(["end"]);
 
-// d3.json("123", function(json) {
- 
-//   root = json;
-//   root.fixed = true;
-//   root.x = w / 2;
-//   root.y = h / 4;
- 
- 
-//         // Build the path
-//   var defs = vis.insert("svg:defs")
-//       .data(["end"]);
- 
- 
-//   defs.enter().append("svg:path")
-//       .attr("d", "M0,-5L10,0L0,5");
- 
-//      update();
-// });
- 
- 
-/**
- *   
- */
+  defs.enter().append("svg:path")
+  .attr("d", "M0,-5L10,0L0,5");
+
+  update();
+
+
 function update() {
   var nodes = flatten(root),
       links = d3.layout.tree().links(nodes);
@@ -127,12 +109,13 @@ function update() {
         .links(links)
         .gravity(0.05)
     .charge(-1500)
-    .linkDistance(100)
+    .linkDistance(function(d) { return d.target.distance})
     .friction(0.5)
     .linkStrength(function(l, i) {return 1; })
     .size([w, h])
     .on("tick", tick)
         .start();
+        // debugger;
  
    var path = vis.selectAll("path.link")
       .data(links, function(d) { return d.target.id; });
@@ -140,8 +123,9 @@ function update() {
     path.enter().insert("svg:path")
       .attr("class", "link")
       // .attr("marker-end", "url(#end)")
-      .style("stroke", "#eee");
- 
+      .style("stroke", "#eee")
+      .style("stroke-width", 2);
+ // debugger;
  
   // Exit any old paths.
   path.exit().remove();
@@ -162,7 +146,7 @@ function update() {
  
   // Append a circle
   nodeEnter.append("svg:circle")
-      .attr("r", function(d) { return Math.sqrt(d.size) / 10 || 4.5; })
+      .attr("r", function(d) { return 20; })
       .style("fill", "#eee");
  
    
@@ -171,8 +155,8 @@ function update() {
         .attr("xlink:href",  function(d) { return d.img;})
         .attr("x", function(d) { return -25;})
         .attr("y", function(d) { return -25;})
-        .attr("height", 50)
-        .attr("width", 50);
+        .attr("height", 200)
+        .attr("width", 400);
   
   // make the image grow a little on mouse over and add the text details on click
   var setEvents = images
@@ -189,8 +173,8 @@ function update() {
               .transition()
               .attr("x", function(d) { return -60;})
               .attr("y", function(d) { return -60;})
-              .attr("height", 100)
-              .attr("width", 100);
+              .attr("height", 400)
+              .attr("width", 800);
           })
           // set back
           .on( 'mouseleave', function() {
@@ -198,8 +182,8 @@ function update() {
               .transition()
               .attr("x", function(d) { return -25;})
               .attr("y", function(d) { return -25;})
-              .attr("height", 50)
-              .attr("width", 50);
+              .attr("height", 200)
+              .attr("width", 400);
           });
 
   // Append hero name on roll over next to the node as well
@@ -208,7 +192,7 @@ function update() {
       .attr("x", x_browser)
       .attr("y", y_browser +15)
       .attr("fill", tcBlack)
-      .text(function(d) { return d.hero; });
+      .text(function(d) { return d.name; });
  
  
   // Exit any old nodes.
@@ -223,14 +207,14 @@ function tick() {
  
  
     path.attr("d", function(d) {
- 
+ // debugger;
      var dx = d.target.x - d.source.x,
            dy = d.target.y - d.source.y,
            dr = Math.sqrt(dx * dx + dy * dy);
+           // debugger;
            return   "M" + d.source.x + "," 
             + d.source.y 
-            + "A" + dr + "," 
-            + dr + " 0 0,1 " 
+            + "L" 
             + d.target.x + "," 
             + d.target.y;
   });

@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from pdb import set_trace
 #from font_recommender import helpers
 
 def path_to_name(string, idx=None):
@@ -15,7 +16,7 @@ def name_to_path(string):
 def generate_font_selection(font_id,
                             distance_matrix,
                             font_list,
-                            max_distance=600
+                            max_distance=300
                             ):
     '''
     Receives id of the font that has been clicked and a radius (max_distance)
@@ -27,7 +28,7 @@ def generate_font_selection(font_id,
 
     relevant_row = np.array(distance_matrix.iloc[[font_id], :]).reshape(-1)
     neighbours = np.where((relevant_row>0)&(relevant_row < max_distance))[0]
-
+    # set_trace()
     # choose nearest neighbors if max_distance includes less than 6 fonts
     if len(neighbours)>5:
         font_choice = np.random.choice(neighbours, 5, replace=False)
@@ -39,6 +40,42 @@ def generate_font_selection(font_id,
     #names = list(set(font_list.iloc[font_choice,1].values))
 
     return list(font_choice), status
+
+def generate_trial_font_selection(font_id,
+                            distance_matrix,
+                            font_list,
+                            max_distance=300
+                            ):
+    '''
+    Receives id of the font that has been clicked and a radius (max_distance)
+    It has two modes:
+
+        - Exploration: in order to sample from a larger radius
+        - Exploitation: in order to find nearest neighbors
+
+    Returns selection of new fonts that can be fed into the sentence generator.'''
+
+    relevant_row = np.array(distance_matrix.iloc[[font_id], :]).reshape(-1)
+    # neighbours = np.where((relevant_row>0)&(relevant_row < max_distance))[0]
+    # if len(neighbours) <5:
+    #     relevant_row.
+    # df = pd.DataFrame(neighbours,relevant_row[neighbours] )
+    # dist_choice = np.sort(relevant_row[neighbours])[:5]
+
+    font_choice = relevant_row.argsort()[1:6]
+    dist_choice = relevant_row[font_choice]
+    # set_trace()
+    # choose nearest neighbors if max_distance includes less than 6 fonts
+    # if len(neighbours)>5:
+    #     font_choice = np.random.choice(neighbours, 5, replace=False)
+    #     status = True
+    # else:
+
+
+    #names = list(set(font_list.iloc[font_choice,1].values))
+
+    return list(font_choice), list(dist_choice)
+
 
 # def picture_paths(font_paths):
 #     # Here we could also add more background
