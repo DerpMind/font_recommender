@@ -31,9 +31,9 @@ function fillFontList(result, fontList){
     d3.select('#fontList')
     .append("svg:image")
     .attr('xlink:href', result[i])
-    .attr('x', i*200+100)
-    .attr('y', i*200+100)
-    .attr('transform', "scale(0.5)");
+    .attr('x', i*120)
+    .attr('y', i*60)
+    .attr('transform', "scale(1.5)");
   }
   // Each font will add a new row
   // debugger;
@@ -109,7 +109,7 @@ function update() {
         .links(links)
         .gravity(0.05)
     .charge(-1500)
-    .linkDistance(function(d) { return d.target.distance})
+    .linkDistance(function(d) { return d.target.distance * 3})
     .friction(0.5)
     .linkStrength(function(l, i) {return 1; })
     .size([w, h])
@@ -146,17 +146,20 @@ function update() {
  
   // Append a circle
   nodeEnter.append("svg:circle")
-      .attr("r", function(d) { return 20; })
+      .attr("r", function(d) { return 80; })
+      .attr('cx', function(d) {return d.id * 2;})
+      .attr('cy', function(d) {return d.id *2;})
       .style("fill", "#eee");
+
  
    
   // Append images
   var images = nodeEnter.append("svg:image")
         .attr("xlink:href",  function(d) { return d.img;})
-        .attr("x", function(d) { return -25;})
-        .attr("y", function(d) { return -25;})
-        .attr("height", 200)
-        .attr("width", 400);
+        .attr("x", function(d) { return d.id*2 - 100;})
+        .attr("y", function(d) { return d.id*2 - 100;})
+        .attr("height", 150)
+        .attr("width", 150);
   
   // make the image grow a little on mouse over and add the text details on click
   var setEvents = images
@@ -171,19 +174,19 @@ function update() {
             // select element in current context
             d3.select( this )
               .transition()
-              .attr("x", function(d) { return -60;})
-              .attr("y", function(d) { return -60;})
-              .attr("height", 400)
-              .attr("width", 800);
+              .attr("x", function(d) { return d.id*2 - 100;})
+              .attr("y", function(d) { return d.id*2 - 100;})
+              .attr("height", 300)
+              .attr("width", 300);
           })
           // set back
           .on( 'mouseleave', function() {
             d3.select( this )
               .transition()
-              .attr("x", function(d) { return -25;})
-              .attr("y", function(d) { return -25;})
-              .attr("height", 200)
-              .attr("width", 400);
+              .attr("x", function(d) { return d.id*2 - 100;})
+              .attr("y", function(d) {return d.id*2 - 100;})
+              .attr("height", 150)
+              .attr("width", 150);
           });
 
   // Append hero name on roll over next to the node as well
@@ -212,8 +215,10 @@ function tick() {
            dy = d.target.y - d.source.y,
            dr = Math.sqrt(dx * dx + dy * dy);
            // debugger;
-           return   "M" + d.source.x + "," 
-            + d.source.y 
+           cx = d.source.x
+           cy = d.source.y + 100
+           return   "M" + cx + "," 
+            + cy
             + "L" 
             + d.target.x + "," 
             + d.target.y;
