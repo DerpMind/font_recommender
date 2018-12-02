@@ -132,7 +132,7 @@ function update() {
           .attr('class', 'link');
 
 
-      path.append("svg:path")
+      path.insert("svg:path")
           .attr('class', 'link')
                .attr('id', function(d){return 'path' + d.target.id;})
         // .attr("marker-end", "url(#end)")
@@ -146,7 +146,17 @@ function update() {
           .attr('xlink:href', function(d){return '#path'+d.target.id})
           // .attr('transform', function(d) {return "translate("+((d.source.y + d.target.y)/2) +
           //                                       "," + ((d.source.x + d.target.x)/2)+ ")";})
-          .text(function(d){return d.target.distance;});
+          .attr("x", function(d) { 
+            var x= (d.target.y + d.source.y)/2
+            return x - 50;
+          })
+          .attr("y", function(d) { 
+            var y= (d.target.x + d.source.x)/2
+            return y;
+          })
+          .style('text-anchor', 'middle')
+          .attr('startOffset', '50%')
+          .text(function(d){return Math.ceil(d.target.distance);});
   //         .attr('x', function(d){return d.source.x;})
   //         .attr('y',function(d){return d.source.y;});
   // // pathEnter.append("text")
