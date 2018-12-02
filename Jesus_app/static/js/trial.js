@@ -94,8 +94,8 @@ vis = d3.select("#vis-container").append("svg").attr("width", w).attr("height", 
   // debugger;
   var defs = vis.insert("svg:defs").data(["end"]);
 
-  defs.enter().append("svg:path")
-  .attr("d", "M0,-5L10,0L0,5");
+  defs.enter().append("svg:path");
+  // .attr("d", "M0,-5L10,0L0,5");
 
   update();
 
@@ -103,28 +103,69 @@ vis = d3.select("#vis-container").append("svg").attr("width", w).attr("height", 
 function update() {
   var nodes = flatten(root),
       links = d3.layout.tree().links(nodes);
- 
+
+  var diagonal = d3.svg.diagonal()
+                       .source(function(d) {return {"x":d.source.y, "y":d.source.x};})
+                       .target(function(d){return {"x":d.target.y, "y":d.target.x};})
+                       .projection(function(d) {return [d.y,d.x];});
   // Restart the force layout.
   force.nodes(nodes)
         .links(links)
         .gravity(0.05)
     .charge(-1500)
-    .linkDistance(function(d) { return d.target.distance * 3})
+    .linkDistance(function(d) { return d.target.distance *3;})
     .friction(0.5)
     .linkStrength(function(l, i) {return 1; })
     .size([w, h])
     .on("tick", tick)
         .start();
         // debugger;
- 
+   // var link = d3.linkHorizontal()
+   //              .x(function(d) {return d.x;})
+   //              .y(function(d) {return d.y;});
    var path = vis.selectAll("path.link")
       .data(links, function(d) { return d.target.id; });
- 
-    path.enter().insert("svg:path")
-      .attr("class", "link")
-      // .attr("marker-end", "url(#end)")
-      .style("stroke", "#eee")
-      .style("stroke-width", 2);
+
+
+      path.enter()
+          .append('g')
+          .attr('class', 'link');
+
+
+      path.append("svg:path")
+          .attr('class', 'link')
+               .attr('id', function(d){return 'path' + d.target.id;})
+        // .attr("marker-end", "url(#end)")
+               .style("stroke", "#eee")
+               .style("stroke-width", 2)
+               .attr('d', diagonal);
+
+
+      path.append("svg:text")
+          .append('textPath')
+          .attr('xlink:href', function(d){return '#path'+d.target.id})
+          // .attr('transform', function(d) {return "translate("+((d.source.y + d.target.y)/2) +
+          //                                       "," + ((d.source.x + d.target.x)/2)+ ")";})
+          .text(function(d){return d.target.distance;});
+  //         .attr('x', function(d){return d.source.x;})
+  //         .attr('y',function(d){return d.source.y;});
+  // // pathEnter.append("text")
+  //     // .attr("class", "pathtext")
+  //     .attr("x", x_browser)
+  //     .attr("y", y_browser +15)
+  //     .attr("fill", tcBlack)
+  //     .text(function(d) { return d.target.distance; });
+
+  // var text =  pathEnter.append('text')
+  //             .attr('class', 'pathtext')
+  //             .attr("x", function(d) { return x_browser;})
+  //             .attr("y", function(d) { return y_browser+30;})
+  //             .attr("fill", tcBlack)
+  //             .text(function(d) { return d.target.distance; });
+
+  //       text.append('textPath')
+  //           .attr('xlink:href', function(d) {return "#path"+d.target.id;});
+
  // debugger;
  
   // Exit any old paths.
@@ -140,7 +181,7 @@ function update() {
   // Enter any new nodes.
   var nodeEnter = node.enter().append("svg:g")
       .attr("class", "node")
-      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+      .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
       .on("click", click)
       .call(force.drag);
  
