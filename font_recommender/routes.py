@@ -8,7 +8,9 @@ fonts = functions.picture_paths()
 # decorators add additional functionality to a function
 @app.route("/")
 def home():
-    print(functions.generate_sentences())
+    print(functions.generate_sentences(
+        font_list=functions.generate_font_selection()
+    ))
     return render_template("home.html", fonts = fonts)
 
 @app.route("/about")
