@@ -1,5 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+  <style>
+  .h-bar {
+    min-height:15px;
+    min-width: 10px;
+    width:0px;
+    height:0px;
+    background-color: steelblue;
+    margin-bottom: 2px;
+    font-size: 11px;
+    color: #f0f8ff;
+    text-align: right;
+    padding-right: 2px;
+  }
+
+  .control-group {
+    padding-top: 10px;
+    margin: 10px;
+  }
+
+  .selected {
+    background-color: #f08080;
+  }
+
+  </style>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -44,15 +68,27 @@
     </nav>
 
     <div id="vis-container">
+        <div class="control-group">
+          <button onclick="select('google')">
+              Google Fonts
+          </button>
+          <button onclick="select('other')">
+              Personalized Fonts
+          </button>
+          <button onclick="select()">
+              Clear
+          </button>
+        </div>
       <h3>Select your favourite font</h3>
       <svg width='960' height="800">
       <g id='fontList'>
         <!--trial.js code here -->
       </g></svg>
+      <svg width="960" height="800">
+        <g id='fontTop10'>
+        </g></svg>
+
     </div>
-
-
-
     <!-- Here we load the javascript code -->
     <script src="static/js/trial.js"></script>
   </body>

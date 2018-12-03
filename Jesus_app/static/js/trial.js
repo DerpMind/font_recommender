@@ -1,4 +1,16 @@
-$.ajax({
+
+function select(category){ //if category is undefined, then you hit the clear case.
+  if (category === undefined || category === 'google' || category === 'other') {
+    // debugger;
+        $.ajax({
+                  url: 'toggle_model',
+                  data: {category},
+                  dataType: 'json',
+                  type: 'GET'
+                }
+
+      );
+          $.ajax({
   url: 'initial',
   dataType: 'json',
   type: 'GET',
@@ -8,6 +20,10 @@ $.ajax({
   }
 
   });
+  }
+
+}
+
 function fillFontList(result, fontList){
 
   // Build up a long string with the code required for the table
