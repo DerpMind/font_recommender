@@ -83,31 +83,36 @@ var w = 1296,
     root;
  
 var vis;
-var force = d3.layout.force(); 
+// var force = d3.layout.force(); 
 
 vis = d3.select("#vis-container").append("svg").attr("width", w).attr("height", h);
 
  function on_thing_clicked(font_name) { //add eventhandler to each of the 5 circles
+  // debugger;
   d3.json(font_name + '/neighbors', function(json) {
   root = json;
   root.fixed = true;
-  // debugger;
   var defs = vis.insert("svg:defs").data(["end"]);
 
   defs.enter().append("svg:path");
   // .attr("d", "M0,-5L10,0L0,5");
-
+  // debugger;
   update();
 
 
 function update() {
+
+  // debugger;
+  vis.selectAll("g").remove();
+  var force = d3.layout.force(); 
   var nodes = flatten(root),
       links = d3.layout.tree().links(nodes);
-
+  // debugger;
   var diagonal = d3.svg.diagonal()
                        .source(function(d) {return {"x":d.source.y, "y":d.source.x};})
                        .target(function(d){return {"x":d.target.y, "y":d.target.x};})
                        .projection(function(d) {return [d.y,d.x];});
+  // debugger;
   // Restart the force layout.
   force.nodes(nodes)
         .links(links)
@@ -185,9 +190,9 @@ function update() {
  
   // Update the nodes…
   var node = vis.selectAll("g.node")
-      .data(nodes, function(d) { return d.id; });
+      .data(nodes, function(d) {return d.id; });
  
- 
+ // debugger;
   // Enter any new nodes.
   var nodeEnter = node.enter().append("svg:g")
       .attr("class", "node")
@@ -216,9 +221,14 @@ function update() {
   var setEvents = images
           // Append hero text
           .on( 'click', function (d) {
-              d3.select("h1").html(d.hero); 
-              d3.select("h2").html(d.name); 
-              d3.select("h3").html ("Take me to " + "<a href='" + d.link + "' >"  + d.hero + " web page ⇢"+ "</a>" ); 
+              // d3.select("h1").html(d.hero); 
+              // d3.select("h2").html(d.name); 
+              // d3.select("h3").html ("Take me to " + "<a href='" + d.link + "' >"  + d.hero + " web page ⇢"+ "</a>" );
+              var clicked_font = this.href.baseVal;
+              var clicked_font_name = clicked_font.split('/')[3].split('.')[0];
+              // debugger;
+              on_thing_clicked(clicked_font_name);
+
            })
 
           .on( 'mouseenter', function() {
@@ -247,7 +257,9 @@ function update() {
       .attr("y", y_browser +15)
       .attr("fill", tcBlack)
       .text(function(d) { return d.name; });
- 
+
+
+  // debugger;
  
   // Exit any old nodes.
   node.exit().remove();
@@ -256,6 +268,7 @@ function update() {
   // Re-select for update.
   path = vis.selectAll("path.link");
   node = vis.selectAll("g.node");
+  // debugger;
  
 function tick() {
  
@@ -276,6 +289,7 @@ function tick() {
   });
     node.attr("transform", nodeTransform);    
   }
+  // debugger;
 }
 
  
@@ -300,8 +314,10 @@ function click(d) {
     d.children = d._children;
     d._children = null;
   }
- 
-  update();
+  font_name = d.img.split('/')[3].split('.')[0]
+
+  on_thing_clicked(font_name);
+  // debugger;
 }
  
  
@@ -322,4 +338,4 @@ function flatten(root) {
  
   recurse(root);
   return nodes;
-} 
+
