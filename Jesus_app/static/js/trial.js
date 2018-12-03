@@ -1,40 +1,46 @@
 
 function select(category){ //if category is undefined, then you hit the clear case.
-  if (category === undefined || category === 'google' || category === 'other') {
-    // debugger;
-        $.ajax({
-                  url: 'toggle_model',
-                  data: {category},
-                  dataType: 'json',
-                  type: 'GET'
+  // debugger;
+  if (category === undefined || category === 'google' || category === 'other')
+    {
+      // debugger;
+      $.ajax({
+                url: 'toggle_model',
+                data: {category},
+                dataType: 'json',
+                type: 'GET',
+                complete: function()
+                {
+                  // debugger;
+                  $.ajax({
+                          url: 'initial',
+                          dataType: 'json',
+                          type: 'GET',
+                          success: function(result)
+                          {
+                            fillFontList(result, 'fontList');
+                          }
+                         });
                 }
-
-      );
-          $.ajax({
-  url: 'initial',
-  dataType: 'json',
-  type: 'GET',
-  success: function(result){
-    // debugger;
-    fillFontList(result, 'fontList')
+            });
+    }
   }
-
-  });
-  }
-
-}
 
 function fillFontList(result, fontList){
 
   // Build up a long string with the code required for the table
   var code = '';
+  var x_coordinates = [0, 300, 150, 0, 300];
+  var y_coordinates = [0, 0, 200, 400, 400];
+  var cx = [150, 600, 370, 150, 600];
+  var cy = [140, 140, 440, 740, 740];
 
   for (var i = 0; i < result.length; i++) {
     d3.select('#fontList')
     .append('circle')
-    .attr('r', 40)
-    .attr('cx', i*100+100)
-    .attr('cy', i*100+100)
+    .attr('r', 120)
+    .attr('cx', cx[i])
+    .attr('cy', cy[i])
     .style('fill', '#eee');
     // .insert("svg:image")
     // .attr('xlink:href', result[i])
@@ -47,8 +53,8 @@ function fillFontList(result, fontList){
     d3.select('#fontList')
     .append("svg:image")
     .attr('xlink:href', result[i])
-    .attr('x', i*120)
-    .attr('y', i*60)
+    .attr('x', x_coordinates[i])
+    .attr('y', y_coordinates[i])
     .attr('transform', "scale(1.5)");
   }
   // Each font will add a new row
@@ -90,9 +96,10 @@ function getResult(clicked_font){
 
 // var tcBlack = "#130C0E";
 
+// rest of vars
+var w = 900,
+    h = 900,
 
-var w = 1296,
-    h = 1000,
     maxNodeSize = 50,
     x_browser = 20,
     y_browser = 25,
@@ -101,7 +108,23 @@ var w = 1296,
 var vis;
 // var force = d3.layout.force(); 
 
-vis = d3.select("#vis-container").append("svg").attr("width", w).attr("height", h);
+
+vis = d3.select('#vis-container').select('#right').append("svg").attr("width", w).attr("height", h);
+ 
+//           <div class="control-group">
+//             <button onclick="select('google')">
+//                 Google Fonts
+//             </button>
+//             <button onclick="select('other')">
+//                 Personalized Fonts
+//             </button>
+//             <button onclick="select()">
+//                 Clear
+//             </button>
+//           </div>
+// buttons = d3.select('div')
+//             .attr('class', 'control-group')
+//             .
 
  function on_thing_clicked(font_name) { //add eventhandler to each of the 5 circles
   // debugger;
@@ -132,18 +155,19 @@ function update() {
   // Restart the force layout.
   force.nodes(nodes)
         .links(links)
-        .gravity(0.05)
-    .charge(-1500)
-    .linkDistance(function(d) { return d.target.distance *3;})
-    .friction(0.5)
-    .linkStrength(function(l, i) {return 1; })
-    .size([w, h])
-    .on("tick", tick)
+        .gravity(0.03)
+        .charge(-1500)
+        .linkDistance(function(d) { return d.target.distance *3;})
+        .friction(0.5)
+        .linkStrength(function(l, i) {return 1; })
+        .size([w, h])
+        .on("tick", tick)
         .start();
-        // debugger;
-   // var link = d3.linkHorizontal()
-   //              .x(function(d) {return d.x;})
-   //              .y(function(d) {return d.y;});
+
+
+    // var drag = force.drag()
+    //     .on(;
+
    var path = vis.selectAll("path.link")
       .data(links, function(d) { return d.target.id; });
 
@@ -169,37 +193,18 @@ function update() {
           //                                       "," + ((d.source.x + d.target.x)/2)+ ")";})
           .attr("x", function(d) { 
             var x= (d.target.y + d.source.y)/2
-            return x - 50;
+            return x;
           })
           .attr("y", function(d) { 
             var y= (d.target.x + d.source.x)/2
             return y;
           })
           .style('text-anchor', 'middle')
-          .attr('startOffset', '50%')
+          .attr('startOffset', '60%')
+          .attr('font-size', '20px')
           .text(function(d){return Math.ceil(d.target.distance);});
-  //         .attr('x', function(d){return d.source.x;})
-  //         .attr('y',function(d){return d.source.y;});
-  // // pathEnter.append("text")
-  //     // .attr("class", "pathtext")
-  //     .attr("x", x_browser)
-  //     .attr("y", y_browser +15)
-  //     .attr("fill", tcBlack)
-  //     .text(function(d) { return d.target.distance; });
 
-  // var text =  pathEnter.append('text')
-  //             .attr('class', 'pathtext')
-  //             .attr("x", function(d) { return x_browser;})
-  //             .attr("y", function(d) { return y_browser+30;})
-  //             .attr("fill", tcBlack)
-  //             .text(function(d) { return d.target.distance; });
 
-  //       text.append('textPath')
-  //           .attr('xlink:href', function(d) {return "#path"+d.target.id;});
-
- // debugger;
- 
-  // Exit any old paths.
   path.exit().remove();
  
  
@@ -233,6 +238,8 @@ function update() {
         .attr("height", 150)
         .attr("width", 150);
   
+
+
   // make the image grow a little on mouse over and add the text details on click
   var setEvents = images
           // Append hero text
@@ -269,10 +276,16 @@ function update() {
   // Append hero name on roll over next to the node as well
   nodeEnter.append("text")
       .attr("class", "nodetext")
-      .attr("x", x_browser)
+      .attr("x", x_browser -20)
       .attr("y", y_browser +15)
       .attr("fill", tcBlack)
       .text(function(d) { return d.name; });
+
+  var parent_node = d3.selectAll('g.node');
+
+  parent_node[parent_node.length -1][5].children[0].setAttribute('cy', 25);
+  parent_node[parent_node.length -1][5].children[1].setAttribute('y', -70);
+  parent_node[parent_node.length -1][5].children[2].setAttribute('y', y_browser + 35);
 
 
   // debugger;
@@ -307,7 +320,13 @@ function tick() {
   }
   // debugger;
 }
+// function dragstart(d) {
+//   d3.select(this).classed("fixed", d.fixed = true);
+// }
 
+// function dbclick(d){
+//   d3.select(this).classed('fixed', d.fixed=False)
+// }
  
 /**
  * Gives the coordinates of the border for keeping the nodes inside a frame

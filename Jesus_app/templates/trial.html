@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
   <style>
+  #vis-container {
+    display:flex;
+    flex-direction:row;
+  }
   .h-bar {
-    min-height:15px;
-    min-width: 10px;
-    width:0px;
-    height:0px;
-    background-color: steelblue;
+    width:180px;
+    height:50px;
+    background-color: #0e0f5cab;
     margin-bottom: 2px;
-    font-size: 11px;
+    font-size: 14px;
     color: #f0f8ff;
-    text-align: right;
-    padding-right: 2px;
+    text-align: center;
+    padding-right: 0px;
   }
 
   .control-group {
@@ -66,27 +68,33 @@
         </ul>
       </div>
     </nav>
-
-    <div id="vis-container">
-        <div class="control-group">
-          <button onclick="select('google')">
-              Google Fonts
-          </button>
-          <button onclick="select('other')">
-              Personalized Fonts
-          </button>
-          <button onclick="select()">
-              Clear
-          </button>
-        </div>
+    <div class="control-group">
+      <button class="h-bar" onclick="select('google')">
+          Google Fonts (803)
+      </button>
+      <button class="h-bar" onclick="select('other')">
+          Personalized Fonts (4400)
+      </button>
+      <button class="h-bar" onclick="select()">
+          Clear
+      </button>
+    </div>
       <h3>Select your favourite font</h3>
-      <svg width='960' height="800">
-      <g id='fontList'>
-        <!--trial.js code here -->
-      </g></svg>
-      <svg width="960" height="800">
-        <g id='fontTop10'>
+    <div id="vis-container">
+       
+      <div class='left'>
+        <svg width='900' height="900">
+        <g id='fontList'>
+          <!--trial.js code here -->
         </g></svg>
+      </div>
+      <div id='right'>
+        
+      </div>
+
+<!--       <svg width="960" height="800">
+        <g id='fontTop10'>
+        </g></svg> -->
 
     </div>
     <!-- Here we load the javascript code -->

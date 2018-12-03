@@ -1,7 +1,12 @@
 from Jesus_app import app
-from Jesus_app.functions import name_to_path, path_to_name, generate_trial_font_selection
+from Jesus_app.functions import name_to_path, path_to_name, generate_trial_font_selection, generate_font_selection
 from flask import Flask, request, render_template, jsonify, g
 import numpy as np, pandas as pd
+
+from pdb import set_trace
+import json
+import time
+
 
 font_list = pd.read_csv("Jesus_app/static/images/pers_font_infos.csv", index_col=0).iloc[:,0]
 font_paths = np.array([("static/images/fonts/" +
@@ -77,6 +82,7 @@ def select_data():
 @app.route('/initial')
 def initial():
     # initial list of 10 fonts
+    # set_trace()
     idx = np.random.randint(data_num, size=5)
     # set_trace()
     print(font_paths[idx])
@@ -91,7 +97,6 @@ def trial():
 
 @app.route('/<font_name>/neighbors')
 def trial_json(font_name):
-    print(font_name)
 
     idx = font_list[font_list == font_name].index[0] #global model variable to be replaced
     relevant_rows = np.array(distance_matrix.iloc[[idx], :]).reshape(-1)
