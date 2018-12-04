@@ -8,7 +8,7 @@ font_paths = np.array([("static/images/fonts/" +
                         name_to_path(item)) for item in font_list])
 distance_matrix = pd.read_csv("Jesus_app/static/images/distance_matrix.csv",index_col=0)
 google_list = pd.read_csv('Jesus_app/static/font_infos.csv')
-google_list = google_list['font_name'].apply(lambda x: x.split('.')[0])
+google_list = google_list['font_name'].apply(lambda x: x.split('/')[-1].split('.')[0])
 google_paths = np.array([("static/images/fonts/" +
                         name_to_path(item)) for item in google_list])
 google_matrix = pd.read_csv('Jesus_app/static/distance_matrix.csv', index_col=0) 
@@ -45,6 +45,7 @@ def neighbors(max_distance=0):
 def initial():
     # initial list of 10 fonts
     idx = np.random.randint(803, size=5)
+    # set_trace()
     print(google_paths[idx])
     result = google_paths[idx].tolist() # I have to change the numpy to list because Object of type 'ndarray' is not JSON serializable
     # set_trace()
@@ -65,7 +66,7 @@ def trial_json(font_name):
                                         google_matrix,
                                         google_list,
                                         300)
-
+    # set_trace()
     name = font_name.replace('%20', ' ')
     file_path = f'static/images/fonts/{name}.png'
     neighbor_paths = google_paths[idx_top5].tolist()
