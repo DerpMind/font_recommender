@@ -16,8 +16,9 @@ function fillFontList(result, tableName){
 
   // Each font will add a new row
   for (var i = 0; i < result.length; i++) {
+
     code += '  <tr>';
-    code += '    <td>' + result[i] + '</td>';
+    code += '    <td>' + '<img src=' + result[i] + '/>' + '</td>';
     code += '  </tr>';
   }
 
@@ -28,7 +29,7 @@ function fillFontList(result, tableName){
   d3.select('#'+tableName)
     .selectAll('td')
     .on('click', function(){
-      var clicked_font = d3.select(this).text();
+      var clicked_font = d3.select(this).html();
       getResult(clicked_font);
     })
 }
@@ -41,8 +42,8 @@ function getResult(clicked_font){
     dataType: 'json',
     type: 'GET',
     success: function(result) {
-      fillFontList(result.top10, 'fontTop10');
-      fillFontList(result.top10insteps, 'fontList');
+      fillFontList(result.top5, 'fontTop10');
+      fillFontList(result.random5, 'fontList');
     }
   });
 }

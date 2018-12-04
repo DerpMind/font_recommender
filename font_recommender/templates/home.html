@@ -1,9 +1,0 @@
-{% extends "layout.html"%}
-
-{% block content %}
-    {% for font in fonts %}
-    <div> 
-        <input onClick="some_example()" type="image" src="{{ font.picture }}" x-path="{{ font.picture }}" />
-    </div>
-    {% endfor %}
-{% endblock %}
