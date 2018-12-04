@@ -73,9 +73,9 @@ function fillFontList(result, fontList){
     .on('click', function(){
       // debugger;
       var clicked_font = this.href.baseVal;
-      // debugger;
-      getResult(clicked_font);
-
+      var clicked_font_name = clicked_font.split('/')[3].split('.')[0]
+      // getResult(clicked_font);
+      on_thing_clicked(clicked_font_name);
     })
 }
 
@@ -87,19 +87,18 @@ function getResult(clicked_font){
     dataType: 'json',
     type: 'GET',
     success: function(result) {
-      debugger;
+      // debugger;
       fillFontList(result.top5, 'fontTop10');
-      fillFontList(result.random5, 'fontList');
+      // fillFontList(result.random5, 'fontList');
     }
   });
 }
 
-// var tcBlack = "#130C0E";
+var tcBlack = "#130C0E";
 
 // rest of vars
 var w = 900,
     h = 900,
-
     maxNodeSize = 50,
     x_browser = 20,
     y_browser = 25,
@@ -107,7 +106,6 @@ var w = 900,
  
 var vis;
 // var force = d3.layout.force(); 
-
 
 vis = d3.select('#vis-container').select('#right').append("svg").attr("width", w).attr("height", h);
  
@@ -125,7 +123,6 @@ vis = d3.select('#vis-container').select('#right').append("svg").attr("width", w
 // buttons = d3.select('div')
 //             .attr('class', 'control-group')
 //             .
-
  function on_thing_clicked(font_name) { //add eventhandler to each of the 5 circles
   // debugger;
   d3.json(font_name + '/neighbors', function(json) {
@@ -138,6 +135,15 @@ vis = d3.select('#vis-container').select('#right').append("svg").attr("width", w
   // debugger;
   update();
 
+
+  });
+}
+// function diagonal(d) {
+// return "M" + d.source.y + "," + d.source.x
+//     + "L" + (d.source.y + d.target.y) / 2 + "," + d.source.x
+//     + " " + (d.source.y + d.target.y) / 2 + "," + d.target.x
+//     + " " + d.target.y + "," + d.target.x;
+// }
 
 function update() {
 
@@ -171,7 +177,6 @@ function update() {
    var path = vis.selectAll("path.link")
       .data(links, function(d) { return d.target.id; });
 
-
       path.enter()
           .append('g')
           .attr('class', 'link');
@@ -203,7 +208,6 @@ function update() {
           .attr('startOffset', '60%')
           .attr('font-size', '20px')
           .text(function(d){return Math.ceil(d.target.distance);});
-
 
   path.exit().remove();
  
@@ -373,4 +377,18 @@ function flatten(root) {
  
   recurse(root);
   return nodes;
+}
 
+// function getResult(clicked_font){
+//   $.ajax({
+//     url: 'neighbors',
+//     data: {'clicked_font': clicked_font, 'trial': true},
+//     dataType: 'json',
+//     type: 'GET',
+//     success: function(result) {
+//       // debugger;
+//       on_thing_clicked(result);
+//       // fillFontList(result.random5, 'fontList');
+//     }
+//   });
+// }
