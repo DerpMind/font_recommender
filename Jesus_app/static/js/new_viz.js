@@ -76,7 +76,7 @@ function getResult(clicked_font){
 function on_node_clicked(font_name){
   d3.json(font_name+"/neighbors", function(error, root){
       var w = window.innerWidth*0.68*0.95;
-      var h = Math.ceil(w*0.05);
+      var h = Math.ceil(w*0.9);
       var oR = 0;
       var nTop = 0;
       var x_coords = [];
@@ -105,7 +105,7 @@ function on_node_clicked(font_name){
       nTop = root.children.length;
       oR = w/(1+3*nTop); 
 
-      h = Math.ceil(w/nTop*2); 
+      // h = Math.ceil(w/nTop*2); 
 
       svgContainer.style("height", h+"px");
 
@@ -114,19 +114,20 @@ function on_node_clicked(font_name){
       .attr("class", "parentBubble")
       .attr("id", "parentImg")
       .attr("xlink:href", function(d){ return d.img; })
-      .attr("x", function(d,i) { return oR*(3*(1+i)-1); })
-      .attr("y", (h+oR)/3)
+      .attr("x", function(d,i) { return (oR*(3*(1+i)-1) - 300); })
+      .attr("y", ((h+oR)/3)-200)
       .attr("width", oR)
       .attr("height", oR)
       .style("opacity", 0.7)
+      .style("border", "5px solid black")
       .on("mouseover", function(d, i){ return activateBubble(d,i); })
       .on("mouseleave", function(){ return resetBubbles(); }); 
 
       //generates parent text
       bubbleObj.append("text")
       .attr("class", "parentTxt")
-      .attr("x", function(d, i) { return oR*(3*(1+i)-1); })
-      .attr("y", (h+oR)/3)
+      .attr("x", function(d, i) { return (oR*(3*(1+i)-1)-300); })
+      .attr("y", ((h+oR)/3)-200)
       .style("fill", "black") // #1f77b4
       .attr("font-size", 14)
       .attr("text-anchor", "middle")
@@ -150,10 +151,10 @@ function on_node_clicked(font_name){
           .attr("width", oR/2)
           .attr("height", oR/2)
           .attr("x", function(d,i) { 
-            var x = (oR*(3*(iB+1)-1) + oR*1.5*Math.cos((i-1)*45/180*3.1415926));
-            x_coords.push(x);
+            var x = (oR*(3*(iB+1)-1) + oR*1.5*Math.cos((i-1)*45/180*3.1415926) - 250);
+            // x_coords.push(x);
             return x; })
-          .attr("y", function(d,i) { return ((h+oR)/3 +        oR*1.5*Math.sin((i-1)*45/180*3.1415926)); })
+          .attr("y", function(d,i) { return ((h+oR)/3 +        oR*1.5*Math.sin((i-1)*45/180*3.1415926) - 100); })
           .attr("cursor","pointer")
           .style("opacity", 0.7)
           .on("mouseover", function(d,i){ activateChildBubble.call(this, d,i); })
@@ -168,8 +169,11 @@ function on_node_clicked(font_name){
           childBubbles.append("text")
           .attr("class", "childBubbleTxt")
           .attr("id", function(d,i){ return "childBubbleTxt_" + i; })
-          .attr("x", function(d,i) { return (oR*(3*(iB+1)-1) + oR*1.5*Math.cos((i-1)*45/180*3.1415926)); })
-          .attr("y", function(d,i) { return ((h+oR)/3 +        oR*1.5*Math.sin((i-1)*45/180*3.1415926)); })
+          .attr("x", function(d,i) { 
+            var x = (oR*(3*(iB+1)-1) + oR*1.5*Math.cos((i-1)*45/180*3.1415926) - 200); 
+            x_coords.push(x);
+            return x; })
+          .attr("y", function(d,i) { return ((h+oR)/3 +        oR*1.5*Math.sin((i-1)*45/180*3.1415926) - 100); })
           .style("opacity",0.7)
           .attr("text-anchor", "middle")
           .style("fill", "black") 
@@ -204,7 +208,7 @@ function on_node_clicked(font_name){
 
         //enlargens, darkens, and slides parent text
         t.selectAll(".parentTxt")
-        .attr("x", oR*2 - 0.6*oR*(-1))
+        .attr("x", (oR*2 - 0.6*oR*(-1)-300))
         .attr("font-size", 14*1.5)
         .attr("font-weight", "bold");
 
@@ -251,9 +255,11 @@ function on_node_clicked(font_name){
         var txt_elem = t.select('#'+txt_id_selected)
         .attr("font-size", 14)
         .attr("font-weight", "bold");
+        // .attr("x", (+txt_x_selected+60));
 
         //ensures text doesn't get shifted more than once before
         //bubbles reset
+        // debugger;
         if(+txt_x_selected < (x_coords[i] + 10)){
           txt_elem.attr("x", +txt_x_selected + 100); }
         
@@ -283,6 +289,7 @@ function on_node_clicked(font_name){
       //mouse-overed child text animation with tooltip
       function activateChildTxt(d,i){ 
         var txt_id_selected = this.id;
+        var txt_x_selected = this.getAttribute("x");
 
         var t = svg.transition()
         .duration(d3.event.altKey ? 7500 : 350);
@@ -352,7 +359,7 @@ function on_node_clicked(font_name){
         w = window.innerWidth*0.68*0.95;
         oR = w/(1+3*nTop);
          
-        h = Math.ceil(w/nTop*2);
+        // h = Math.ceil(w/nTop*2);
         svgContainer.style("height",h+"px");
 
              
@@ -365,21 +372,21 @@ function on_node_clicked(font_name){
         t.select("#parentImg")
         .attr("width", oR)
         .attr("height", oR)
-        .attr("x", function(d, i) {return oR*(3*(1+i)-1); })
-        .attr("y", (h+oR)/3)
+        .attr("x", function(d, i) {return (oR*(3*(1+i)-1)-300); })
+        .attr("y", ((h+oR)/3)-200)
         .style("opacity", 0.7);
 
         t.select(".parentTxt")
         .attr("font-size", 14)
         .attr("font-weight", "normal")
-        .attr("x", function(d, i) {return oR*(3*(1+i)-1); })
-        .attr("y", (h+oR)/3);
+        .attr("x", function(d, i) {return (oR*(3*(1+i)-1)-300); })
+        .attr("y", ((h+oR)/3)-200);
        
         for(var k = 0; k < nTop; k++) 
         {
           t.selectAll(".childBubbleTxt")
-          .attr("x", function(d,i) {return (oR*(3*(k+1)-1) + oR*1.5*Math.cos((i-1)*45/180*3.1415926)); })
-          .attr("y", function(d,i) {return ((h+oR)/3 +        oR*1.5*Math.sin((i-1)*45/180*3.1415926)); })
+          .attr("x", function(d,i) {return (oR*(3*(k+1)-1) + oR*1.5*Math.cos((i-1)*45/180*3.1415926) - 200); })
+          .attr("y", function(d,i) {return ((h+oR)/3 +        oR*1.5*Math.sin((i-1)*45/180*3.1415926) - 100); })
           .attr("font-size", 9)
           .attr("font-weight", "normal")
           .style("opacity",0.7);
@@ -388,8 +395,8 @@ function on_node_clicked(font_name){
           .attr("height",  oR /2.0)
           .attr("width", oR/2.0)
           .style("opacity",0.5)
-          .attr("x", function(d,i) {return (oR*(3*(k+1)-1) + oR*1.5*Math.cos((i-1)*45/180*3.1415926)); })
-          .attr("y", function(d,i) {return ((h+oR)/3 +        oR*1.5*Math.sin((i-1)*45/180*3.1415926)); });
+          .attr("x", function(d,i) {return (oR*(3*(k+1)-1) + oR*1.5*Math.cos((i-1)*45/180*3.1415926) - 250); })
+          .attr("y", function(d,i) {return ((h+oR)/3 +        oR*1.5*Math.sin((i-1)*45/180*3.1415926) - 100); });
         }
       }
       window.onresize = resetBubbles;

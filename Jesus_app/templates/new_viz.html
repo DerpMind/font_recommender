@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <style type="text/css">
+.title {
+    color: white;
+    font-family: helvetica;
+    font-weight: 200;
+}
 #vis-container {
   display:flex;
   flex-direction:row;
@@ -42,7 +47,7 @@ div.tooltip{
   position: absolute;
   text-align: center;
   width: 200px;
-  height: 10px;
+  height: 14px;
   padding: 2px;
   font: 12px sans-serif;
   background: lightsteelblue;
@@ -57,17 +62,23 @@ div.tooltip{
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>smartFont</title>
   <meta name="author" content="me">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   <!-- d3 -->
+<!--   <link href="static/css/style.css" rel="stylesheet">
+ -->
   <script src="https://d3js.org/d3.v3.min.js"></script>
 </head>
   <body>
     <div class="row" style="background-color:#25435B;padding:10px;text-align:center;">
-        <div class="col-md-2 text-left">
+<!--         <div class="col-md-2 text-left">
             <img src="static/images/website/github-256.png" style="width:75px;" alt="logo">
-        </div>
-        <div class="col-md-8 title">
-            <h1>Client-Server talking with Flask</h1>
+        </div> -->
+        <div class="col-lg-12 title" style="text-align:center;">
+            <h1>smartFont</h1>
         </div>
     </div>
 
@@ -92,7 +103,7 @@ div.tooltip{
           Clear
       </button>
     </div>
-    <h3>Select your favourite font</h3>
+    <h3>Select your favorite font</h3>
     <div id= "vis-container">
       <div class='left'>
         <svg width='900' height="900">
