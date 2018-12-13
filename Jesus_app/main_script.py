@@ -90,7 +90,7 @@ def initial():
 
 @app.route('/trial')
 def trial():
-    return render_template('trial.html')
+    return render_template('new_viz.html')
 
 @app.route('/<font_name>/neighbors')
 def trial_json(font_name):
@@ -113,7 +113,7 @@ def trial_json(font_name):
         path = n.replace('%20', ' ')
         sub_result = {'name': font_name, 'img': path, 'distance': distance}
         neighbs.append(sub_result)
-
+    final_result = {"name":"bubble", "children":[result]}
     # result = {'top5':font_paths[idx_top5].tolist(), 'random5':font_paths[idx].tolist()} 
     # result = {'name': ''}
-    return json.dumps(result)
+    return json.dumps(final_result)

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<style type="text/css">
+#vis-container {
+  display:flex;
+  flex-direction:row;
+}
+.h-bar {
+  width:180px;
+  height:50px;
+  background-color: #0e0f5cab;
+  margin-bottom: 2px;
+  font-size: 14px;
+  color: #f0f8ff;
+  text-align: center;
+  padding-right: 0px;
+}
+
+.control-group {
+  padding-top: 10px;
+  margin: 10px;
+}
+
+.selected {
+  background-color: #f08080;
+}
+#mainBubble {
+  background: #fff;
+  font: 10px sans-serif;
+  height: 800px;
+  position: relative;
+  width: 80%;
+}
+         
+#mainBubble svg {
+  left: 0;
+  position: absolute;
+  top: 0;
+}
+
+div.tooltip{
+  position: absolute;
+  text-align: center;
+  width: 200px;
+  height: 10px;
+  padding: 2px;
+  font: 12px sans-serif;
+  background: lightsteelblue;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+}
+</style>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>smartFont</title>
+  <meta name="author" content="me">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <!-- d3 -->
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+</head>
+  <body>
+    <div class="row" style="background-color:#25435B;padding:10px;text-align:center;">
+        <div class="col-md-2 text-left">
+            <img src="static/images/website/github-256.png" style="width:75px;" alt="logo">
+        </div>
+        <div class="col-md-8 title">
+            <h1>Client-Server talking with Flask</h1>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">Home</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="control-group">
+      <button class="h-bar" onclick="select('google')">
+          Google Fonts (803)
+      </button>
+      <button class="h-bar" onclick="select('other')">
+          Personalized Fonts (4400)
+      </button>
+      <button class="h-bar" onclick="select()">
+          Clear
+      </button>
+    </div>
+    <h3>Select your favourite font</h3>
+    <div id= "vis-container">
+      <div class='left'>
+        <svg width='900' height="900">
+        <g id='fontList'>
+          <!--five random fonts code here -->
+        </g>
+      </svg>
+      </div>
+      <div id="mainBubble" style="height: 307px;"></div>
+    </div>
+    <!-- Here we load the javascript code -->
+    <script src="static/js/new_viz.js"></script>
+  </body>
+</html>
