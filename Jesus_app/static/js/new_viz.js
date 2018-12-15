@@ -54,17 +54,17 @@ function fillFontList(result, fontList){
 }
 
 
-function getResult(clicked_font){
-  $.ajax({
-    url: 'neighbors',
-    data: {'clicked_font': clicked_font, 'trial': true},
-    dataType: 'json',
-    type: 'GET',
-    success: function(result) {
-      fillFontList(result.top5, 'fontTop10');
-    }
-  });
-}
+// function getResult(clicked_font){
+//   $.ajax({
+//     url: 'neighbors',
+//     data: {'clicked_font': clicked_font, 'trial': true},
+//     dataType: 'json',
+//     type: 'GET',
+//     success: function(result) {
+//       fillFontList(result.top5, 'fontTop10');
+//     }
+//   });
+// }
 
 
 
