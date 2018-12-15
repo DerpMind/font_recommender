@@ -5,13 +5,8 @@ function select(category){ //if category is undefined, then you hit the clear ca
             data: {category},
             dataType: 'json',
             type: 'GET',
-            complete: function(){
-              $.ajax({url: 'initial',
-                      dataType: 'json',
-                      type: 'GET',
-                      success: function(result){
-                        fillFontList(result, 'fontList');}
-              });
+            complete: function(result){
+              fillFontList(result.responseJSON, 'fontList')
             }
     });
   }

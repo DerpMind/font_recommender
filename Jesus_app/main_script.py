@@ -74,11 +74,10 @@ def select_data():
     # set_trace()
     model = request.args.get('category')
     load_data(model)
-    return ''
+    return initialize()
+    
 
-
-@app.route('/initial')
-def initial():
+def initialize():
     # initial list of 10 fonts
     # set_trace()
     idx = np.random.randint(data_num, size=5)
