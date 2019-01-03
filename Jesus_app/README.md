@@ -9,7 +9,7 @@ The site is partitioned by two versions of the font recommendation system, Versi
 
 ### Version 1
 
-Clone this [repo](https://github.com/DerpMind/font_recommender.git).  Under the root directory, run `python app.py` on the shell. Look at the result in the browser `locahost:5000`:  
+Clone this [repo](https://github.com/DerpMind/font_recommender.git).  Under the root directory, run `python app.py` on the shell. Look at the result in the browser `locahost:5000` 
 
 It has four routes:
 
@@ -21,7 +21,7 @@ It has four routes:
 
 ### Version 2
 
-If you hadn't done it for Version 1, clone this [repo](https://github.com/DerpMind/font_recommender.git).  Under the root directory, run `python app.py` on the shell. Look at the result in the browser `locahost:5000/trial`:
+If you hadn't done it for Version 1, clone this [repo](https://github.com/DerpMind/font_recommender.git).  Under the root directory, run `python app.py` on the shell. Look at the result in the browser `locahost:5000/trial`
 
 
 - `/trial` to serve the home page.
