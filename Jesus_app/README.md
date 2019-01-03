@@ -2,7 +2,6 @@
 
 Data consists of ~2.5 GB ttf and png files.  The VAE model trains on 128x128 images that display text from various font types, average reconstructive loss at ~10%. We built a recommendation system on top of flask, user-selection-based in the realm of typography.   
 
-The `app.py` file is a Flask application with the minimum functionality. Run it with `python app.py` and look at the result in the browser `locahost:5000/trial` for Liz's version, and `locahost:5000/` for Lorenz's version. .
 
 ## Running the site
 
